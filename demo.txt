@@ -1,0 +1,26 @@
+@when('Enter username "{user}" and Paswword "{passwd}"')
+def enterlogindata(context,user,passwd):
+    context.driver.find_element_by_id("txtUsername").send_keys(user)
+    context.driver.find_element_by_id("txtPassword").send_keys(passwd)
+
+@and('click on login button')
+def clicklogin(context):
+    context.driver.find_element_by_id("btnLogin").click()
+
+@then('user must successfully login to dashboard page')
+def verifydashboardpage(context):
+    status=context.driver.find_element_by_css_selector("div.head h1").is_displayed()
+    assert status == True
+
+@then('Enter username "<username>" and Paswword "<password>"')
+def Invalidlogin(context,usname,pwd):
+    context.driver.find_element_by_id("txtUsername").send_keys(usname)
+    context.driver.find_element_by_id("txtPassword").send_keys(pwd)
+
+@then('user must see error msg')
+def Verifyerrormsg(context):
+    status = context.driver.find_element_by_css_selector("div#divLoginButton span").is_displayed()
+    assert status == True
+    allure.attach(context.driver.grt_screenshot_as_png(),
+                  name="invalid",
+                  attachment_type=AttachmentType.png)
